@@ -62,7 +62,17 @@ class LinkedList {
     } else {
       tail->next = newPtr;
       tail = newPtr;
-      // std::cout << "q";
+    }
+    length++;
+  }
+
+  void addToTail(std::shared_ptr<Node> newPtr) {
+    if (tail == nullptr) {
+      tail = newPtr;
+      head = newPtr;
+    } else {
+      tail->next = newPtr;
+      tail = newPtr;
     }
     length++;
   }
