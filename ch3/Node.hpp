@@ -13,6 +13,9 @@ struct Node {
   Node(int data) :
         data(data), next(nullptr) {}
 
+  Node(std::string str) :
+        str(str), next(nullptr) {}
+
   Node(int data, std::string str) :
         data(data), str(str), next(nullptr) {}
 

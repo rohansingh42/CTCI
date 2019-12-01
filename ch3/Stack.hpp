@@ -8,9 +8,10 @@
 
 class Stack {
   std::shared_ptr<Node> head;
+  std::shared_ptr<Node> minHead;
 
  public:
-  Stack() : head(nullptr), length(0) {}
+  Stack() : head(nullptr), minHead(nullptr) {}
 
   Stack(std::shared_ptr<Node> head) :
         head(head) {}
@@ -32,21 +33,43 @@ class Stack {
   void push(int data) {
     std::shared_ptr<Node> newPtr = 
       std::make_shared<Node>(Node(data));
-    newPtr->next = head
+    std::shared_ptr<Node> newMinPtr = 
+      std::make_shared<Node>(Node(data));
+
+    newPtr->next = head;
     head = newPtr;
+
+    if ((minHead == nullptr) ||
+        (minHead->data >= newMinPtr->data)) {
+      newMinPtr->next = minHead;
+      minHead = newMinPtr;
+    }
   }
 
   void push(std::shared_ptr<Node> newPtr) {
-    newPtr->next = head
+    std::shared_ptr<Node> newMinPtr = 
+          std::make_shared<Node>(Node(newPtr->data));
+    newPtr->next = head;
     head = newPtr;
+
+    if ((minHead == nullptr) ||
+        (minHead->data >= newMinPtr->data)) {
+      newMinPtr->next = minHead;
+      minHead = newMinPtr;
+    }
   }
 
   std::shared_ptr<Node> pop() {
     if (head == nullptr) {
       return nullptr;
     } else {
+      if (minHead->data == head->data) {
+        minHead = minHead->next;
+      }
+      std::shared_ptr<Node> poppedNode = 
+      std::make_shared<Node>(Node(head->data));
       head = head->next;
-      return head;
+      return poppedNode;
     }
   }
 
@@ -54,14 +77,24 @@ class Stack {
     return (head == nullptr);
   }
 
+  int getMin() {
+    if (minHead == nullptr) {
+      return -1;
+    } else {
+      return minHead->data;
+    }
+  }
+
   void print() {
     if (head != nullptr) {
       std::shared_ptr<Node> temp(head);
       while (temp != nullptr) {
-        std::cout << temp->data << " -> ";
+        std::cout << temp->data << " <- ";
         temp = temp->next;
       }
+      std::cout << std::endl;
+    } else {
+      std::cout << "NULL" << std::endl;
     }
-    std::cout << "NULL" << std::endl;
   }
 };
